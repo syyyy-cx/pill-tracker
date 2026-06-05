@@ -11,9 +11,30 @@
   <link rel="icon" type="image/svg+xml" href="/icons/icon-192.svg" />
   <link rel="apple-touch-icon" href="/icons/icon-192.png" />
   <title>甜蜜吃药 💊</title>
+  <style>
+    .splash {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f8fafc; color: #6366f1; margin: 0; padding: 20px;
+    }
+    .splash-icon { font-size: 3rem; margin-bottom: 16px; animation: bounce 1.5s infinite; }
+    .splash-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
+    .splash-sub { font-size: 0.9rem; color: #94a3b8; }
+    .splash-bar { width: 120px; height: 4px; background: #e2e8f0; border-radius: 4px; margin-top: 24px; overflow: hidden; }
+    .splash-bar-inner { height: 100%; width: 30%; background: #6366f1; border-radius: 4px; animation: loading 1.5s infinite; }
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @keyframes loading { 0% { transform: translateX(-100%); } 100% { transform: translateX(400%); } }
+  </style>
 </head>
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <div class="splash">
+      <div class="splash-icon">💊</div>
+      <div class="splash-title">甜蜜吃药</div>
+      <div class="splash-sub">加载中...</div>
+      <div class="splash-bar"><div class="splash-bar-inner"></div></div>
+    </div>
+  </div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>
