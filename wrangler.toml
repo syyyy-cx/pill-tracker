@@ -1,0 +1,9 @@
+name = "pill-tracker"
+compatibility_date = "2025-06-01"
+
+pages_build_output_dir = "dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "pill-tracker-db"
+database_id = "CHANGE_ME"  # 部署时在 Cloudflare 面板创建后替换
