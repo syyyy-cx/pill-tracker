@@ -83,7 +83,7 @@ export default function HomePage() {
 
       <div className="medicines-header">
         <h3>📋 今天的药</h3>
-        <button className="btn-add" onClick={() => setShowAddModal(true)}>+ 添加</button>
+        <span className="med-count">{state.medicines.length} 种</span>
       </div>
 
       <div className="medicines-list">
@@ -91,9 +91,18 @@ export default function HomePage() {
           <MedicineCard key={med.id} medicine={med} />
         ))}
         {state.medicines.length === 0 && (
-          <p className="empty-state">还没有药品，点右上角添加吧 📋</p>
+          <div className="empty-state">
+            <div className="empty-icon">💊</div>
+            <p className="empty-title">还没有药品</p>
+            <p className="empty-desc">点击下方按钮添加今天的药吧</p>
+          </div>
         )}
       </div>
+
+      {/* Floating add button */}
+      <button className="fab" onClick={() => setShowAddModal(true)}>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
 
       {showAddModal && (
         <AddMedicineModal

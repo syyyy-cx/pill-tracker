@@ -18,8 +18,11 @@ function reducer(state, action) {
   switch (action.type) {
     case 'SET_USER':
       return { ...state, user: action.payload }
-    case 'SET_PHARMACY':
-      return { ...state, pharmacy: action.payload, members: action.payload?.members || [] }
+    case 'SET_PHARMACY': {
+      const raw = action.payload?.members
+      const members = raw ? (typeof raw === 'string' ? JSON.parse(raw) : raw) : []
+      return { ...state, pharmacy: action.payload, members }
+    }
     case 'SET_MEDICINES':
       return { ...state, medicines: action.payload }
     case 'SET_TODAY_CHECKINS':
