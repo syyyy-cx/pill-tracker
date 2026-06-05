@@ -56,37 +56,53 @@ export default function HomePage() {
     dispatch({ type: 'SET_TODAY_CHECKINS', payload: checkins })
   }
 
-  const checkedCount = state.todayCheckIns.filter(
-    c => state.medicines.some(m => m.id === c.medicine_id)
-  ).length
-  const totalCount = state.medicines.length
-  const lateCount = state.todayCheckIns.filter(c => c.status === 'late').length
-  const ontimeCount = state.todayCheckIns.filter(c => c.status === 'ontime').length
+  const user = state.pharmacy || {}
+  const today = new Date().toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', weekday: 'short' })
 
   return (
     <div className="home-page">
       <DailyMessage />
 
-      <div className="progress-card">
-        <div className="progress-header">
-          <span>今日打卡 <strong>{checkedCount}/{totalCount}</strong></span>
-          <span className={lateCount > 0 ? 'text-danger' : 'text-success'}>
-            ⏰ 按时 {ontimeCount}{lateCount > 0 ? ` · 迟到 ${lateCount}` : ''}
-          </span>
+      {/* Hero Card */}
+      <div className="hero-card">
+        <div className="hero-top">
+          <span className="hero-greeting">👋 {user.nickname || '早安'}</span>
+          <span className="hero-date">{today}</span>
         </div>
-        <div className="progress-bar">
-          <div className="progress-fill" style={{
-            width: totalCount > 0 ? `${(checkedCount / totalCount) * 100}%` : '0%'
-          }} />
+        <div className="hero-stats">
+          <div className="hero-stat">
+            <div className="hero-stat-value">{checkedCount}/{totalCount}</div>
+            <div className="hero-stat-label">已打卡</div>
+          </div>
+          <div className="hero-stat">
+            <div className="hero-stat-value">{ontimeCount}</div>
+            <div className="hero-stat-label">按时</div>
+          </div>
+          <div className="hero-stat">
+            <div className="hero-stat-value">{lateCount}</div>
+            <div className="hero-stat-label">迟到</div>
+          </div>
+        </div>
+        <div className="hero-bar-wrap">
+          <div className="hero-bar-header">
+            <span>今日进度</span>
+            <span>{totalCount > 0 ? Math.round((checkedCount/totalCount)*100) : 0}%</span>
+          </div>
+          <div className="hero-bar">
+            <div className="hero-bar-fill" style={{
+              width: totalCount > 0 ? `${(checkedCount/totalCount)*100}%` : '0%'
+            }} />
+          </div>
         </div>
       </div>
 
-      <div className="medicines-header">
+      {/* Medicines */}
+      <div className="section-header">
         <h3>📋 今天的药</h3>
         <span className="med-count">{state.medicines.length} 种</span>
       </div>
 
-      <div className="medicines-list">
+      <div className="med-list">
         {state.medicines.map(med => (
           <MedicineCard key={med.id} medicine={med} />
         ))}
