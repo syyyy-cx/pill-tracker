@@ -33,30 +33,35 @@ export async function onRequest(context) {
 
   const url = new URL(request.url);
 
-  // Public routes (no auth required)
-  if (url.pathname === '/api/pharmacy/create' || url.pathname === '/api/pharmacy/join') {
-    const response = await next();
-    Object.entries(corsHeaders).forEach(([k,v]) => response.headers.set(k,v));
-    return response;
+  // Only apply JWT auth to /api/* routes
+  if (url.pathname.startsWith('/api/')) {
+    // Public API routes (no auth required)
+    if (url.pathname === '/api/pharmacy/create' || url.pathname === '/api/pharmacy/join') {
+      const response = await next();
+      Object.entries(corsHeaders).forEach(([k,v]) => response.headers.set(k,v));
+      return response;
+    }
+
+    // Protected API routes require JWT auth
+    const auth = request.headers.get('Authorization');
+    if (!auth || !auth.startsWith('Bearer ')) {
+      return new Response(JSON.stringify({ error: '未认证' }), {
+        status: 401, headers: { 'Content-Type': 'application/json', ...corsHeaders }
+      });
+    }
+
+    const userId = await verifyToken(auth.slice(7));
+    if (!userId) {
+      return new Response(JSON.stringify({ error: 'Token 无效' }), {
+        status: 401, headers: { 'Content-Type': 'application/json', ...corsHeaders }
+      });
+    }
+
+    // Pass userId to downstream handlers
+    context.data = { userId };
   }
 
-  // All other routes require JWT auth
-  const auth = request.headers.get('Authorization');
-  if (!auth || !auth.startsWith('Bearer ')) {
-    return new Response(JSON.stringify({ error: '未认证' }), {
-      status: 401, headers: { 'Content-Type': 'application/json', ...corsHeaders }
-    });
-  }
-
-  const userId = await verifyToken(auth.slice(7));
-  if (!userId) {
-    return new Response(JSON.stringify({ error: 'Token 无效' }), {
-      status: 401, headers: { 'Content-Type': 'application/json', ...corsHeaders }
-    });
-  }
-
-  // Pass userId to downstream handlers
-  context.data = { userId };
+  // Non-API routes pass through without auth
   const response = await next();
   Object.entries(corsHeaders).forEach(([k,v]) => response.headers.set(k,v));
   return response;
