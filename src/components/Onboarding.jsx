@@ -1,5 +1,5 @@
 // src/components/Onboarding.jsx
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { api } from '../api'
 
 const AVATARS = ['😊', '🥰', '😎', '🤗', '🫶', '💪', '🌟', '🦋', '🌈', '🎀', '🐱', '🐶']
@@ -11,7 +11,8 @@ export default function Onboarding({ onAuth }) {
   const [inviteCode, setInviteCode] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [createdCode, setCreatedCode] = useState('')
+  const [createdData, setCreatedData] = useState(null)
+  const [copied, setCopied] = useState(false)
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -19,21 +20,68 @@ export default function Onboarding({ onAuth }) {
     setLoading(true); setError('')
 
     try {
-      let result
       if (mode === 'create') {
-        result = await api.createPharmacy(nickname, avatar)
-        setCreatedCode(result.inviteCode)
+        const result = await api.createPharmacy(nickname, avatar)
+        // Show the invite code before entering
+        setCreatedData(result)
       } else {
-        result = await api.joinPharmacy(nickname, inviteCode, avatar)
+        const result = await api.joinPharmacy(nickname, inviteCode, avatar)
+        localStorage.setItem('token', result.token)
+        localStorage.setItem('userId', result.userId)
+        onAuth(result)
       }
-      localStorage.setItem('token', result.token)
-      localStorage.setItem('userId', result.userId)
-      onAuth(result)
     } catch (err) {
       setError(err.message)
     } finally {
       setLoading(false)
     }
+  }
+
+  function handleEnterApp() {
+    if (!createdData) return
+    localStorage.setItem('token', createdData.token)
+    localStorage.setItem('userId', createdData.userId)
+    onAuth(createdData)
+  }
+
+  function handleCopyCode() {
+    if (createdData?.inviteCode) {
+      navigator.clipboard.writeText(createdData.inviteCode).then(() => {
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+      }).catch(() => {
+        // Fallback: select the text
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+      })
+    }
+  }
+
+  // Show invite code after creation
+  if (createdData) {
+    return (
+      <div className="onboarding">
+        <div className="onboarding-hero">🎉</div>
+        <h1 className="onboarding-title">药局创建成功！</h1>
+        <p className="onboarding-subtitle">把邀请码发给对方就可以绑定了 💕</p>
+
+        <div className="invite-code-box">
+          <div className="invite-code-label">你的邀请码</div>
+          <div className="invite-code">{createdData.inviteCode}</div>
+          <div className="invite-code-hint">有效期 7 天</div>
+        </div>
+
+        <div className="onboarding-buttons" style={{marginTop: 24}}>
+          <button className="btn btn-primary btn-lg" onClick={handleCopyCode}
+            style={{background:'white', color:'var(--primary)'}}>
+            {copied ? '✅ 已复制！' : '📋 复制邀请码'}
+          </button>
+          <button className="btn btn-secondary btn-lg" onClick={handleEnterApp}>
+            🚀 开始使用
+          </button>
+        </div>
+      </div>
+    )
   }
 
   if (!mode) {
