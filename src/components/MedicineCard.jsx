@@ -38,6 +38,12 @@ export default function MedicineCard({ medicine }) {
       }})
       setShowMsg(false)
       setMessage('')
+      // Check achievements
+      api.checkAchievements().then(data => {
+        if (data.unlocked && data.unlocked.length > 0) {
+          api.getAchievements().then(a => dispatch({ type: 'SET_ACHIEVEMENTS', payload: a }))
+        }
+      }).catch(() => {})
     } catch (err) {
       alert(err.message)
     } finally {

@@ -27,7 +27,7 @@
 .btn-text { background: none; border: none; color: rgba(255,255,255,0.8); text-decoration: underline; cursor: pointer; font-size: 0.9rem; }
 
 .form-group { width: 100%; margin-bottom: 16px; }
-.form-group label { display: block; font-weight: 500; margin-bottom: 6px; font-size: 0.9rem; color: rgba(255,255,255,0.9); }
+.form-group label { display: block; font-weight: 500; margin-bottom: 6px; font-size: 0.9rem; color: var(--text-secondary); }
 .form-group input {
   width: 100%; padding: 14px 16px; border: 2px solid rgba(255,255,255,0.25);
   border-radius: var(--radius-sm); background: rgba(255,255,255,0.95); color: var(--text);

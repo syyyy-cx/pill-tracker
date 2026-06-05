@@ -37,6 +37,7 @@ export const api = {
 
   // 成就
   getAchievements: () => request('/achievements'),
+  checkAchievements: () => request('/achievements', { method: 'POST' }),
 
   // 消息
   getMessages: (since) => request(`/messages${since ? `?since=${since}` : ''}`),
