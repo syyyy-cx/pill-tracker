@@ -263,3 +263,13 @@
 .stats-row:last-child { border-bottom: none; }
 .stats-date { color: var(--text-secondary); }
 .stats-bar-text { font-size: 0.8rem; }
+
+/* AI */
+.chat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.btn-ai-trigger {
+  background: linear-gradient(135deg, #fce4ec, #f8bbd0); border: none;
+  border-radius: 20px; padding: 6px 14px; font-size: 0.8rem; cursor: pointer;
+  color: #831843; font-weight: 500; transition: opacity 0.2s;
+}
+.btn-ai-trigger:disabled { opacity: 0.5; }
+.chat-ai-badge { font-size: 0.7rem; opacity: 0.7; margin-top: 4px; }

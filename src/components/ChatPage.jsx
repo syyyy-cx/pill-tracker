@@ -7,6 +7,7 @@ export default function ChatPage() {
   const { state, dispatch } = useStore()
   const [text, setText] = useState('')
   const [sending, setSending] = useState(false)
+  const [aiLoading, setAiLoading] = useState(false)
   const bottomRef = useRef(null)
 
   // Poll for new messages every 3 seconds
@@ -18,8 +19,6 @@ export default function ChatPage() {
       try {
         const newMsgs = await api.getMessages(latest)
         if (newMsgs.length > 0) {
-          dispatch({ type: 'ADD_MESSAGE', payload: newMsgs[newMsgs.length - 1] })
-          // Actually we need to set all messages, not just the last one
           dispatch({ type: 'SET_MESSAGES', payload: [...state.messages, ...newMsgs] })
         }
       } catch(e) { /* ignore polling errors */ }
@@ -46,17 +45,28 @@ export default function ChatPage() {
     }
   }
 
-  function getSenderLabel(msg) {
-    if (msg.type === 'system') return '系统'
-    if (msg.type === 'ai_encourage') return '🤖 小助手'
-    return msg.sender_name || '未知'
+  async function handleAIEncourage() {
+    setAiLoading(true)
+    try {
+      await api.generateEncouragement()
+      // Will be picked up by next poll
+    } catch(err) {
+      alert(err.message)
+    } finally {
+      setAiLoading(false)
+    }
   }
 
   const myId = localStorage.getItem('userId')
 
   return (
     <div className="chat-page">
-      <h3 className="chat-title">💬 消息</h3>
+      <div className="chat-header">
+        <h3>💬 消息</h3>
+        <button className="btn-ai-trigger" onClick={handleAIEncourage} disabled={aiLoading}>
+          {aiLoading ? '⏳' : '🤖'} 生成鼓励
+        </button>
+      </div>
 
       <div className="chat-messages">
         {state.messages.map(msg => (
@@ -64,9 +74,12 @@ export default function ChatPage() {
             msg.sender_id === myId ? 'chat-msg-right' : 'chat-msg-left'
           } ${msg.type !== 'text' ? 'chat-msg-system' : ''}`}>
             {msg.sender_id !== myId && msg.type === 'text' && (
-              <div className="chat-sender">{getSenderLabel(msg)}</div>
+              <div className="chat-sender">{msg.sender_name || '对方'}</div>
             )}
-            <div className="chat-bubble">{msg.content}</div>
+            <div className="chat-bubble">
+              {msg.content}
+              {msg.type === 'ai_encourage' && <div className="chat-ai-badge">🤖 AI 鼓励</div>}
+            </div>
             <div className="chat-time">
               {new Date(msg.created_at).toLocaleTimeString('zh-CN', {
                 hour: '2-digit', minute: '2-digit'
