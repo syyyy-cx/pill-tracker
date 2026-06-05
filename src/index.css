@@ -1,37 +1,69 @@
 :root {
-  --primary: #667eea;
-  --primary-dark: #5a6fd6;
-  --secondary: #764ba2;
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --primary-light: #eef2ff;
+  --accent: #f472b6;
   --success: #22c55e;
-  --warning: #eab308;
+  --success-bg: #f0fdf4;
+  --warning: #f59e0b;
   --danger: #ef4444;
-  --bg: #f5f7fa;
+  --danger-bg: #fef2f2;
+  --bg: #f8fafc;
   --card-bg: #ffffff;
-  --text: #1f2937;
-  --text-secondary: #6b7280;
-  --border: #e5e7eb;
-  --radius: 12px;
+  --text: #0f172a;
+  --text-secondary: #64748b;
+  --text-tertiary: #94a3b8;
+  --border: #e2e8f0;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
   background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   overscroll-behavior: none;
+  line-height: 1.5;
 }
 button { cursor: pointer; font-family: inherit; }
 input, textarea { font-family: inherit; }
+::-webkit-scrollbar { display: none; }
 
-/* PWA Loading Screen */
+/* Loading */
 .loading-screen {
   display: flex; align-items: center; justify-content: center;
-  height: 100vh; font-size: 3rem;
-  animation: pill-pulse 1.5s ease-in-out infinite;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  height: 100vh; font-size: 2.5rem;
+  animation: pulse 1.5s ease-in-out infinite;
+  background: var(--bg); color: var(--primary);
 }
-@keyframes pill-pulse {
+@keyframes pulse {
   0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.1); opacity: 0.7; }
+  50% { transform: scale(1.08); opacity: 0.5; }
 }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.3s ease-out; }
+.slide-up { animation: slideUp 0.35s ease-out; }
+
+/* Skeleton Loading */
+.skeleton {
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 200% 100%; border-radius: var(--radius-sm);
+  animation: shimmer 1.5s infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.skeleton-message { height: 48px; margin-bottom: 16px; }
+.skeleton-card { height: 72px; margin-bottom: 10px; }
