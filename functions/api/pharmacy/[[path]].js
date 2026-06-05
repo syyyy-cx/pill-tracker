@@ -65,10 +65,10 @@ export async function onRequest(context) {
   if (path === '/api/pharmacy/info') {
     const { userId } = context.data;
     const user = await env.DB.prepare(
-      `SELECT u.id, u.nickname, u.avatar, u.is_creator, u.pharmacy_id,
+      `SELECT u.id, u.nickname, u.avatar, u.is_creator, u.pharmacy_id, p.invite_code,
               (SELECT json_group_array(json_object('id', u2.id, 'nickname', u2.nickname, 'avatar', u2.avatar))
                FROM users u2 WHERE u2.pharmacy_id = u.pharmacy_id) as members
-       FROM users u WHERE u.id = ?`
+       FROM users u JOIN pharmacies p ON u.pharmacy_id = p.id WHERE u.id = ?`
     ).bind(userId).first();
 
     if (!user) {

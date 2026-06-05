@@ -6,11 +6,13 @@ import StatsPage from './StatsPage'
 import AchievementsPage from './AchievementsPage'
 import ChatPage from './ChatPage'
 import ContractPage from './ContractPage'
+import SettingsPage from './SettingsPage'
 import { useStore } from '../store'
 import { api } from '../api'
 
 export default function Layout({ onLogout }) {
   const [activeTab, setActiveTab] = useState('home')
+  const [showSettings, setShowSettings] = useState(false)
   const { state, dispatch } = useStore()
 
   useEffect(() => {
@@ -39,6 +41,7 @@ export default function Layout({ onLogout }) {
   }
 
   function renderPage() {
+    if (showSettings) return <SettingsPage onLogout={onLogout} />
     switch (activeTab) {
       case 'home': return <HomePage />
       case 'stats': return <StatsPage />
@@ -49,12 +52,23 @@ export default function Layout({ onLogout }) {
     }
   }
 
+  function handleTabChange(tab) {
+    setShowSettings(false)
+    setActiveTab(tab)
+  }
+
   return (
     <div className="layout">
       <main className="main-content">
+        <div className="layout-header">
+          <span className="layout-title">💊 甜蜜吃药</span>
+          <button className="settings-gear" onClick={() => setShowSettings(!showSettings)}>
+            {showSettings ? '✕' : '⚙️'}
+          </button>
+        </div>
         {renderPage()}
       </main>
-      <BottomNav active={activeTab} onChange={setActiveTab} />
+      <BottomNav active={activeTab} onChange={handleTabChange} />
     </div>
   )
 }
