@@ -273,3 +273,17 @@
 }
 .btn-ai-trigger:disabled { opacity: 0.5; }
 .chat-ai-badge { font-size: 0.7rem; opacity: 0.7; margin-top: 4px; }
+
+/* Install Banner */
+.install-banner {
+  display: flex; justify-content: space-between; align-items: center;
+  background: linear-gradient(135deg, #667eea, #764ba2); color: white;
+  padding: 12px 16px; border-radius: var(--radius); margin-top: 16px;
+  font-size: 0.85rem;
+}
+.install-btn {
+  background: white; color: var(--primary); border: none;
+  border-radius: 20px; padding: 8px 16px; font-weight: 600;
+  font-size: 0.85rem; cursor: pointer;
+}
+.install-hint { font-size: 0.8rem; opacity: 0.9; }

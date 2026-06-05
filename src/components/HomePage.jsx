@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import DailyMessage from './DailyMessage'
 import MedicineCard from './MedicineCard'
 import AddMedicineModal from './AddMedicineModal'
@@ -8,6 +8,43 @@ import { api } from '../api'
 export default function HomePage() {
   const { state, dispatch } = useStore()
   const [showAddModal, setShowAddModal] = useState(false)
+  const [deferredPrompt, setDeferredPrompt] = useState(null)
+  const [isInstalled, setIsInstalled] = useState(false)
+
+  useEffect(() => {
+    // iOS detection
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+    if (isStandalone || document.referrer.includes('android-app://')) {
+      setIsInstalled(true)
+    }
+
+    // Listen for PWA install prompt (Android Chrome)
+    const handler = (e) => {
+      e.preventDefault()
+      setDeferredPrompt(e)
+    }
+    window.addEventListener('beforeinstallprompt', handler)
+
+    // Listen for install success
+    window.addEventListener('appinstalled', () => {
+      setIsInstalled(true)
+      setDeferredPrompt(null)
+    })
+
+    return () => window.removeEventListener('beforeinstallprompt', handler)
+  }, [])
+
+  async function handleInstall() {
+    if (deferredPrompt) {
+      deferredPrompt.prompt()
+      const result = await deferredPrompt.userChoice
+      if (result.outcome === 'accepted') {
+        setIsInstalled(true)
+      }
+      setDeferredPrompt(null)
+    }
+  }
 
   async function refreshMedicines() {
     const medicines = await api.getMedicines()
@@ -63,6 +100,17 @@ export default function HomePage() {
           onClose={() => setShowAddModal(false)}
           onAdded={() => { refreshMedicines(); refreshCheckIns(); }}
         />
+      )}
+
+      {!isInstalled && (
+        <div className="install-banner">
+          <span>📱 添加到桌面更方便</span>
+          {deferredPrompt ? (
+            <button className="install-btn" onClick={handleInstall}>安装</button>
+          ) : (
+            <span className="install-hint">iOS: Safari分享 → 添加到主屏幕</span>
+          )}
+        </div>
       )}
     </div>
   )
