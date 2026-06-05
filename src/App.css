@@ -1,0 +1,36 @@
+
+/* Onboarding styles */
+.onboarding {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; min-height: 100vh; padding: 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+.onboarding-hero { font-size: 4rem; margin-bottom: 16px; }
+.onboarding-title { font-size: 1.8rem; font-weight: 700; }
+.onboarding-subtitle { font-size: 1rem; opacity: 0.9; margin: 8px 0 32px; }
+.onboarding-buttons { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 320px; }
+.btn {
+  padding: 14px 24px; border: none; border-radius: 25px;
+  font-size: 1rem; font-weight: 600; transition: transform 0.2s; cursor: pointer;
+}
+.btn:active { transform: scale(0.97); }
+.btn-lg { padding: 16px 32px; font-size: 1.05rem; }
+.btn-primary { background: white; color: var(--primary); }
+.btn-secondary { background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.4); }
+.btn-text { background: none; border: none; color: rgba(255,255,255,0.8); text-decoration: underline; cursor: pointer; }
+.form-group { width: 100%; margin-bottom: 16px; }
+.form-group label { display: block; font-weight: 500; margin-bottom: 6px; opacity: 0.9; font-size: 0.9rem; }
+.form-group input {
+  width: 100%; padding: 12px 16px; border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 12px; background: rgba(255,255,255,0.15); color: white;
+  font-size: 1rem; outline: none; box-sizing: border-box;
+}
+.form-group input::placeholder { color: rgba(255,255,255,0.5); }
+.avatar-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.avatar-option {
+  font-size: 1.5rem; padding: 8px; border-radius: 12px;
+  background: rgba(255,255,255,0.1); cursor: pointer; transition: all 0.2s;
+}
+.avatar-option.selected { background: rgba(255,255,255,0.3); transform: scale(1.2); }
+.error-msg { color: #fca5a5; font-size: 0.85rem; margin: 8px 0; background: rgba(0,0,0,0.2); padding: 8px 12px; border-radius: 8px; width: 100%; text-align: center; }
