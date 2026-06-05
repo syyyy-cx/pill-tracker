@@ -197,3 +197,18 @@
   display: flex; align-items: center; justify-content: center; cursor: pointer;
 }
 .chat-send-btn:disabled { opacity: 0.5; }
+
+/* Achievements */
+.achievements-page { }
+.page-subtitle { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 16px; }
+.achievements-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.achievement-card {
+  background: white; border-radius: var(--radius); padding: 16px; text-align: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: transform 0.2s;
+}
+.achievement-card.locked { opacity: 0.5; filter: grayscale(0.5); }
+.achievement-icon { font-size: 2rem; margin-bottom: 6px; }
+.achievement-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; }
+.achievement-desc { color: var(--text-secondary); font-size: 0.8rem; line-height: 1.3; }
+.achievement-date { color: var(--success); font-size: 0.75rem; margin-top: 6px; }
+.achievement-progress { color: var(--primary); font-size: 0.75rem; margin-top: 6px; }
