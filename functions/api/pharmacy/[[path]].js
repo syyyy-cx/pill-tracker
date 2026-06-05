@@ -82,6 +82,25 @@ export async function onRequest(context) {
     });
   }
 
+  if (path === '/api/pharmacy/update') {
+    const { nickname, avatar } = await request.json();
+    const { userId } = context.data;
+    if (!nickname && !avatar) {
+      return new Response(JSON.stringify({ error: '没有可更新的字段' }), {
+        status: 400, headers: { 'Content-Type': 'application/json' }
+      });
+    }
+    if (nickname) {
+      await env.DB.prepare('UPDATE users SET nickname = ? WHERE id = ?').bind(nickname, userId).run();
+    }
+    if (avatar) {
+      await env.DB.prepare('UPDATE users SET avatar = ? WHERE id = ?').bind(avatar, userId).run();
+    }
+    return new Response(JSON.stringify({ ok: true, nickname, avatar }), {
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
   return new Response(JSON.stringify({ error: 'Not found' }), {
     status: 404, headers: { 'Content-Type': 'application/json' }
   });

@@ -425,3 +425,27 @@
 
 /* Settings page headings */
 .settings-page h3 { font-size: 1rem; font-weight: 700; margin-bottom: 16px; }
+
+/* Settings edit */
+.settings-section-header {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
+}
+.settings-section-header h4 { margin-bottom: 0 !important; }
+.btn-edit {
+  background: none; border: none; color: var(--primary); font-size: 0.82rem;
+  font-weight: 600; cursor: pointer; padding: 4px 8px;
+}
+.settings-value { color: var(--text-secondary); }
+.btn-save {
+  flex: 1; background: var(--primary); color: white; border: none;
+  border-radius: 14px; padding: 12px; font-size: 0.9rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-save:disabled { opacity: 0.5; }
+.btn-save:active { transform: scale(0.98); }
+.btn-cancel {
+  flex: 1; background: #f1f5f9; color: var(--text-secondary); border: none;
+  border-radius: 14px; padding: 12px; font-size: 0.9rem; font-weight: 500;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-cancel:active { transform: scale(0.98); }

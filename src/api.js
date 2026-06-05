@@ -21,6 +21,7 @@ export const api = {
   joinPharmacy: (nickname, inviteCode, avatar) =>
     request('/pharmacy/join', { method: 'POST', body: JSON.stringify({ nickname, inviteCode, avatar }) }),
   getPharmacy: () => request('/pharmacy/info'),
+  updateProfile: (data) => request('/pharmacy/update', { method: 'PUT', body: JSON.stringify(data) }),
 
   // 药品
   getMedicines: () => request('/medicines'),
