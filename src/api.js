@@ -18,8 +18,8 @@ export const api = {
   // 药局
   createPharmacy: (nickname, avatar) =>
     request('/pharmacy/create', { method: 'POST', body: JSON.stringify({ nickname, avatar }) }),
-  joinPharmacy: (nickname, inviteCode) =>
-    request('/pharmacy/join', { method: 'POST', body: JSON.stringify({ nickname, inviteCode }) }),
+  joinPharmacy: (nickname, inviteCode, avatar) =>
+    request('/pharmacy/join', { method: 'POST', body: JSON.stringify({ nickname, inviteCode, avatar }) }),
   getPharmacy: () => request('/pharmacy/info'),
 
   // 药品
@@ -44,7 +44,6 @@ export const api = {
   // 契约
   getContract: () => request('/contracts'),
   createContract: (data) => request('/contracts', { method: 'POST', body: JSON.stringify(data) }),
-  settleContract: () => request('/contracts/settle', { method: 'POST' }),
 
   // 统计
   getStats: (period) => request(`/stats?period=${period}`),

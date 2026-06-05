@@ -24,7 +24,7 @@ export default function Onboarding({ onAuth }) {
         result = await api.createPharmacy(nickname, avatar)
         setCreatedCode(result.inviteCode)
       } else {
-        result = await api.joinPharmacy(nickname, inviteCode)
+        result = await api.joinPharmacy(nickname, inviteCode, avatar)
       }
       localStorage.setItem('token', result.token)
       localStorage.setItem('userId', result.userId)
